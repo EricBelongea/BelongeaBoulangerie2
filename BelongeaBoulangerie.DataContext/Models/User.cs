@@ -10,6 +10,10 @@ namespace BelongeaBoulangerie.DataContext.Models
 {
     public class User
     {
+        public User()
+        {
+            Breads = new HashSet<Bread>();
+        }
         public int UserId { get; set; }
         [Required, MaxLength(50)]
         public string FirstName { get; set; }
@@ -17,6 +21,7 @@ namespace BelongeaBoulangerie.DataContext.Models
         public string LastName { get; set; }
         [Required, Column("EmailAddress"), MaxLength(50)] // Will rename column in db, but not here in the model. 
         public string Email { get; set; }
+        public ICollection<Bread> Breads { get; set; }
         public string FullName => FirstName + " " + LastName;
 
         [Required, MaxLength(50)]
