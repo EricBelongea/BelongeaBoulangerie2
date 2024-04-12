@@ -11,47 +11,47 @@ namespace BelongeaBoulangerie2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CountriesController : ControllerBase
     {
         private readonly BoulangerieContext _context;
 
-        public UsersController(BoulangerieContext context)
+        public CountriesController(BoulangerieContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Countries.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Countries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<Country>> GetCountry(int id)
         {
-            var user = await _context.Users.FindAsync(id); // this shouldn't work since the user has a UserId not id. 
+            var country = await _context.Countries.FindAsync(id);
 
-            if (user == null)
+            if (country == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return country;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(int id, User user)
+        //public async Task<IActionResult> PutCountry(int id, Country country)
         //{
-        //    if (id != user.UserId)
+        //    if (id != country.CountryId)
         //    {
         //        return BadRequest();
         //    }
 
-        //    _context.Entry(user).State = EntityState.Modified;
+        //    _context.Entry(country).State = EntityState.Modified;
 
         //    try
         //    {
@@ -59,7 +59,7 @@ namespace BelongeaBoulangerie2.Controllers
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!UserExists(id))
+        //        if (!CountryExists(id))
         //        {
         //            return NotFound();
         //        }
@@ -72,36 +72,36 @@ namespace BelongeaBoulangerie2.Controllers
         //    return NoContent();
         //}
 
-        // POST: api/Users
+        // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-        }
-
-        // DELETE: api/Users/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteUser(int id)
+        //[HttpPost]
+        //public async Task<ActionResult<Country>> PostCountry(Country country)
         //{
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user == null)
+        //    _context.Countries.Add(country);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetCountry", new { id = country.CountryId }, country);
+        //}
+
+        // DELETE: api/Countries/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteCountry(int id)
+        //{
+        //    var country = await _context.Countries.FindAsync(id);
+        //    if (country == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    _context.Users.Remove(user);
+        //    _context.Countries.Remove(country);
         //    await _context.SaveChangesAsync();
 
         //    return NoContent();
         //}
 
-        //private bool UserExists(int id)
-        //{
-        //    return _context.Users.Any(e => e.UserId == id);
-        //}
+        private bool CountryExists(int id)
+        {
+            return _context.Countries.Any(e => e.CountryId == id);
+        }
     }
 }
