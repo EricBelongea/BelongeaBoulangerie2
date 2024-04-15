@@ -9,7 +9,7 @@ namespace BelongeaBoulangerie.DataContext.DTOs
     public class BreadRecipeDTO
     {
         public int BakeTime { get; set; }
-        public string Ingredients { get; set; }
-        public string Instructions { get; set; }
+        public List<string> Ingredients { get; set; }
+        public List<string> Instructions { get; set; }
     }
 }

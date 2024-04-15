@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
+using BelongeaBoulangerie.DataContext.DTOs;
 
 namespace BelongeaBoulangerie2.Controllers
 {
@@ -75,8 +76,17 @@ namespace BelongeaBoulangerie2.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserDTO userDto)
         {
+            var user = new User
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Email = userDto.Email
+            };
+
+            user.SetUsername(userDto.UserName);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 

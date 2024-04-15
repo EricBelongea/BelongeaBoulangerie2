@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace BelongeaBoulangerie.DataContext.Models
 {
-    public class Recipe
+    public enum Continent
     {
-        public int BakeTime { get; set; }
-        public List<string> Ingredients { get; set; }
-        public List<string> Instructions { get; set; }
+        Europe,
+        Asia,
+        Africa,
+        NorthAmerica,
+        SouthAmerica,
+        Austrailia,
+        UnAssigned
     }
 }

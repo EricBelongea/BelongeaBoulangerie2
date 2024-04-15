@@ -15,5 +15,6 @@ namespace BelongeaBoulangerie.DataContext.Models
         public string CulinaryHistory { get; set; }
         public string ImageUrl { get; set; }
         public ICollection<Bread> Breads { get; set; }
+        public Continent CountryContinent { get; set; }
     }
 }

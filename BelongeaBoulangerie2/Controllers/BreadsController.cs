@@ -45,34 +45,34 @@ namespace BelongeaBoulangerie2.Controllers
 
         // PUT: api/Breads/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBread(int id, Bread bread)
-        {
-            if (id != bread.BreadId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutBread(int id, Bread bread)
+        //{
+        //    if (id != bread.BreadId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(bread).State = EntityState.Modified;
+        //    _context.Entry(bread).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BreadExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!BreadExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Breads
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -103,24 +103,24 @@ namespace BelongeaBoulangerie2.Controllers
         }
 
         // DELETE: api/Breads/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBread(int id)
-        {
-            var bread = await _context.Breads.FindAsync(id);
-            if (bread == null)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteBread(int id)
+        //{
+        //    var bread = await _context.Breads.FindAsync(id);
+        //    if (bread == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Breads.Remove(bread);
-            await _context.SaveChangesAsync();
+        //    _context.Breads.Remove(bread);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool BreadExists(int id)
-        {
-            return _context.Breads.Any(e => e.BreadId == id);
-        }
+        //private bool BreadExists(int id)
+        //{
+        //    return _context.Breads.Any(e => e.BreadId == id);
+        //}
     }
 }
