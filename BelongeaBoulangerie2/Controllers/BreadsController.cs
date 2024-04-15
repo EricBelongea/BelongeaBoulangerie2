@@ -83,11 +83,9 @@ namespace BelongeaBoulangerie2.Controllers
             {
                 Name = breadDto.Name,
                 Description = breadDto.Description,
-                BreadRecipe = new Recipe
+                Recipe = new Recipe
                 {
-                    BakeTime = breadDto.BreadRecipe.BakeTime,
-                    Ingredients = breadDto.BreadRecipe.Ingredients,
-                    Instructions = breadDto.BreadRecipe.Instructions
+                    BakeTime = breadDto.Recipe.BakeTime
                 }
             };
             var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == breadDto.CountryName);

@@ -4,6 +4,7 @@ using BelongeaBoulangerie.DataContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BelongeaBoulangerie.DataContext.Migrations
 {
     [DbContext(typeof(BoulangerieContext))]
-    partial class BoulangerieContextModelSnapshot : ModelSnapshot
+    [Migration("20240415201826_breadRecipeOnetoOne")]
+    partial class breadRecipeOnetoOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
