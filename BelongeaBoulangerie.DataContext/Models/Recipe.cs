@@ -21,6 +21,5 @@ namespace BelongeaBoulangerie.DataContext.Models
         public int BreadId { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
         public ICollection<Instruction> Instructions { get; set; }
-        //public ICollection<IngredientRecipe> IngredientLinks { get; set; }
     }
 }

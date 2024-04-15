@@ -52,10 +52,6 @@ namespace BelongeaBoulangerie.DataContext.Models
             modelBuilder.Entity<Bread>(entity =>
             {
                 entity.HasKey(e => e.BreadId);
-                //entity.OwnsOne(e => e.Recipe)
-                //    .ToJson("Recipe")
-                //    .Property(e => e.BakeTime)
-                //    .IsRequired();
             });
 
             modelBuilder.Entity<User>(entity =>

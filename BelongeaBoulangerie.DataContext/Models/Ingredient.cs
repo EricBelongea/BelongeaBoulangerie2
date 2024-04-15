@@ -18,6 +18,5 @@ namespace BelongeaBoulangerie.DataContext.Models
         public double? Quantity { get; set; }
         public double? Grams { get; set; }
         public ICollection<Recipe> Recipes { get; set; }
-        //public ICollection<IngredientRecipe> RecipeLinks { get; set;}
     }
 }
