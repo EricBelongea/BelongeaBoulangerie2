@@ -24,9 +24,16 @@ namespace BelongeaBoulangerie2.Controllers
 
         // GET: api/Breads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bread>>> GetBreads()
+        public async Task<ActionResult<IEnumerable<BreadDTO>>> GetBreads()
         {
-            return await _context.Breads.ToListAsync();
+            var breadDtos = await _context.Breads.Select(b => new BreadDTO
+            {
+                Name = b.Name,
+                Description = b.Description,
+                CountryName = _context.Countries.Where(c => c.CountryId == b.CountryID).Select(c => c.Name).FirstOrDefault()
+            }).ToListAsync();
+
+            return breadDtos;
         }
 
         // GET: api/Breads/5
@@ -79,22 +86,23 @@ namespace BelongeaBoulangerie2.Controllers
         [HttpPost]
         public async Task<ActionResult<Bread>> PostBread(BreadDTO breadDto)
         {
-            var bread = new Bread
-            {
-                Name = breadDto.Name,
-                Description = breadDto.Description,
-                Recipe = new Recipe
-                {
-                    BakeTime = breadDto.Recipe.BakeTime
-                }
-            };
+            //var bread = new Bread
+            //{
+            //    Name = breadDto.Name,
+            //    Description = breadDto.Description,
+            //    Recipe = new Recipe
+            //    {
+            //        BakeTime = breadDto.Recipe.BakeTime
+            //    }
+            //};
             var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == breadDto.CountryName);
             if (country == null)
             {
                 return BadRequest("Country not found");
             }
+            var bread = Bread.CreateBreadFromDTO(breadDto, country);
 
-            bread.Country = country;
+            //bread.CountryID = country.CountryId;
             _context.Breads.Add(bread);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetBread", new {id = bread.BreadId}, bread);

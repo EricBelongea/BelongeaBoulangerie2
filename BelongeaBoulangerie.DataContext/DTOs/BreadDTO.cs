@@ -11,7 +11,7 @@ namespace BelongeaBoulangerie.DataContext.DTOs
         public int BreadId {  get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public BreadRecipeDTO Recipe { get; set; }
+        public RecipeDTO Recipe { get; set; }
         public string CountryName { get; set; }
     }
 }

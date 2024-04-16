@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BelongeaBoulangerie.DataContext.DTOs
 {
-    public class BreadRecipeDTO
+    public class RecipeDTO
     {
         public int BakeTime { get; set; }
-        public List<string> Ingredients { get; set; }
-        public List<string> Instructions { get; set; }
+        public List<IngredientDTO> Ingredients { get; set; }
+        public List<InstructionDTO> Instructions { get; set; }
     }
 }
