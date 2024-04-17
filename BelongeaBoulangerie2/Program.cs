@@ -16,6 +16,7 @@ builder.Services.AddDbContext<BoulangerieContext>(options =>
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 builder.Services.AddScoped<BreadService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<CountryService>();
 
 var app = builder.Build();
 

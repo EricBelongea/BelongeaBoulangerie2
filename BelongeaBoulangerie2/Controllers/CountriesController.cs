@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
 using BelongeaBoulangerie.DataContext.DTOs;
+using BelongeaBoulangerie.DataContext.Utils;
 
 namespace BelongeaBoulangerie2.Controllers
 {
@@ -15,24 +16,19 @@ namespace BelongeaBoulangerie2.Controllers
     public class CountriesController : ControllerBase
     {
         private readonly BoulangerieContext _context;
+        private readonly CountryService _countryService;
 
-        public CountriesController(BoulangerieContext context)
+        public CountriesController(BoulangerieContext context, CountryService countryService)
         {
             _context = context;
+            _countryService = countryService;
         }
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CountryDTO>>> GetCountries()
+        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-            var countriesDto = await _context.Countries.Select(c => new CountryDTO
-            {
-                Name = c.Name,
-                Description = c.Description,
-                CulinaryHistory = c.CulinaryHistory
-            }).ToListAsync();
-
-            return Ok(countriesDto);
+            return await _context.Countries.ToListAsync();
         }
 
         // GET: api/Countries/5
@@ -47,6 +43,21 @@ namespace BelongeaBoulangerie2.Controllers
             }
 
             return country;
+        }
+
+        // GET: api/Countries/Name/Scotland
+        [HttpGet("Name/{Name}")]
+        public async Task<ActionResult<Country>> GetCountryByName(string Name)
+        {
+            try
+            {
+                var country = await _countryService.CountryByName(Name);
+                return country;
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         // PUT: api/Countries/5
