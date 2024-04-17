@@ -1,10 +1,11 @@
-﻿using BelongeaBoulangerie.DataContext.DTOs;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BelongeaBoulangerie.DataContext.Models
@@ -20,6 +21,7 @@ namespace BelongeaBoulangerie.DataContext.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public Recipe Recipe { get; set; }
+        [JsonIgnore]
         public Country Country { get; set; }
         public int CountryID { get; set; }
         public ICollection<User> Users { get; set; }

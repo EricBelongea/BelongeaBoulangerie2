@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
-using BelongeaBoulangerie.DataContext.DTOs;
 using BelongeaBoulangerie.DataContext.Utils;
 using Newtonsoft.Json;
 
@@ -27,19 +26,9 @@ namespace BelongeaBoulangerie2.Controllers
 
         // GET: api/Breads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BreadDTO>>> GetBreads()
+        public async Task<ActionResult<IEnumerable<object>>> GetBreads()
         {
-            var breadDtos = await _context.Breads.Include(b => b.Recipe).Select(b => new BreadDTO
-            {
-                BreadName = b.Name,
-                Description = b.Description,
-                //CountryName = _context.Countries.Single(c => c.CountryId == b.CountryID).Name,
-                BakeTime = b.Recipe.BakeTime
-                //Ingredients = (List<IngredientDTO>)b.Recipe.Ingredients,
-                //Instructions = (List<InstructionDTO>)b.Recipe.Instructions,
-            }).ToListAsync();
-
-            return breadDtos;
+            return await _breadService.AllBreadWithRecipeInfo();
         }
 
         // GET: api/Breads/5
@@ -89,21 +78,21 @@ namespace BelongeaBoulangerie2.Controllers
 
         // POST: api/Breads
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Bread>> PostBread(BreadDTO breadDto)
-        {
-            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == breadDto.CountryName);
-            if (country == null)
-            {
-                return BadRequest("Country not found");
-            }
-            var breadId = _breadService.CreateBreadFromDTO(breadDto);
+        //[HttpPost]
+        //public async Task<ActionResult<Bread>> PostBread(Bread bread)
+        //{
+        //    var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == bread.CountryName);
+        //    if (country == null)
+        //    {
+        //        return BadRequest("Country not found");
+        //    }
+        //    var breadId = _breadService.CreateBreadFromDTO(bread);
 
-            //bread.CountryID = country.CountryId;
-            //_context.Breads.Add(bread);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetBread", new {id = breadId}, breadDto);
-        }
+        //    //bread.CountryID = country.CountryId;
+        //    //_context.Breads.Add(bread);
+        //    await _context.SaveChangesAsync();
+        //    return CreatedAtAction("GetBread", new {id = breadId}, bread);
+        //}
 
         // DELETE: api/Breads/5
         //[HttpDelete("{id}")]

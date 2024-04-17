@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BelongeaBoulangerie.DataContext.Models
@@ -16,6 +17,7 @@ namespace BelongeaBoulangerie.DataContext.Models
         }
         public int RecipeId { get; set; }
         public int? BakeTime { get; set; }
+        [JsonIgnore]
         public Bread Bread { get; set; }
         [ForeignKey("Bread")]
         public int BreadId { get; set; }

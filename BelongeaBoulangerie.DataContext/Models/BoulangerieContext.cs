@@ -52,13 +52,13 @@ namespace BelongeaBoulangerie.DataContext.Models
             modelBuilder.Entity<Bread>(entity =>
             {
                 entity.HasKey(e => e.BreadId);
+                //entity.HasOne(b => b.Recipe).WithOne(r => r.Bread);
+                //entity.Property(b => b.RecipeId);
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.UserId);
-                //entity.HasKey(e => new { e.FirstName, e.LastName}); // This is how we would make a Composite Key. However, first and last name combinations are not unique. Could use email!
-                //entity.HasAlternateKey(e => e.Email); // emails are unique. 
+                entity.HasKey(e => e.UserId); 
                 entity.HasIndex(e => e.Email).IsUnique();
                 entity.HasIndex(e => e.UserName).IsUnique(); // I want all usernames to be unique.
                 //entity.Property(e => e.UserName).HasField("_validUsername");

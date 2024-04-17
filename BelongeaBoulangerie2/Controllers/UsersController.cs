@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
-using BelongeaBoulangerie.DataContext.DTOs;
 using BelongeaBoulangerie.DataContext.Utils;
 
 namespace BelongeaBoulangerie2.Controllers
