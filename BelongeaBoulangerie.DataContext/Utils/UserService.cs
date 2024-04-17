@@ -53,21 +53,20 @@ namespace BelongeaBoulangerie.DataContext.Utils
             return user;
         }
 
-        public async Task<User> UpdateUser(int id, User user)
-        {
-            var existingUser = await _context.Users.FindAsync(id);
+        //public async Task<User> UpdateUser(User user)
+        //{
+        //    var existingUser = await _context.Users.FindAsync(user.UserId);
+        //    if (existingUser == null)
+        //    {
+        //        throw new DirectoryNotFoundException("User Not Found");
+        //    }
 
-            if (existingUser == null)
-            {
-                throw new Exception("User Not Found");
-            }
+        //    existingUser.FirstName = user.FirstName;
+        //    existingUser.LastName = user.LastName;
+        //    existingUser.Email = user.Email;
+        //    existingUser.UserName = user.UserName;
 
-            existingUser.FirstName = user.FirstName;
-            existingUser.LastName = user.LastName;
-            existingUser.Email = user.Email;
-            existingUser.UserName = user.UserName;
-
-            return existingUser;
-        }
+        //    return existingUser;
+        //}
     }
 }

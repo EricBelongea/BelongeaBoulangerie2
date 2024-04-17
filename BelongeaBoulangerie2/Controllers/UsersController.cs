@@ -62,31 +62,34 @@ namespace BelongeaBoulangerie2.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchUser(User user)
         {
-            var existingUser = await _context.Users.FindAsync(id);
-
-            if (existingUser == null)
-            {
-                throw new Exception("User Not Found");
-            }
-
-            existingUser.FirstName = user.FirstName;
-            existingUser.LastName = user.LastName;
-            existingUser.Email = user.Email;
-            existingUser.UserName = user.UserName;
-            //var updatedUser = _userService.UpdateUser(id, user); // Instead if ID and User, we could change ID and UserName since the real user wouldn't know the ID.
-            _context.Entry(existingUser).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-                return NoContent();
+                var existingUser = await _context.Users.FindAsync(user.UserId);
+
+                if (existingUser == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                existingUser.FirstName = user.FirstName;
+                existingUser.LastName = user.LastName;
+                existingUser.Email = user.Email;
+                existingUser.UserName = user.UserName;
+
+                _context.Users.Update(existingUser);
+                _context.SaveChanges();
+                return Content("User Updated");
             }
             catch (DbUpdateConcurrencyException)
             {
                 return NotFound();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Username or Email already in use.");
             }
         }
 
