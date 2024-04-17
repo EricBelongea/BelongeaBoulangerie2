@@ -15,7 +15,7 @@ namespace BelongeaBoulangerie.DataContext.Models
             Instructions = new List<Instruction>();
         }
         public int RecipeId { get; set; }
-        public int BakeTime { get; set; }
+        public int? BakeTime { get; set; }
         public Bread Bread { get; set; }
         [ForeignKey("Bread")]
         public int BreadId { get; set; }

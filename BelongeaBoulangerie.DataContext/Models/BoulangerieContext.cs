@@ -60,7 +60,7 @@ namespace BelongeaBoulangerie.DataContext.Models
                 //entity.HasKey(e => new { e.FirstName, e.LastName}); // This is how we would make a Composite Key. However, first and last name combinations are not unique. Could use email!
                 entity.HasAlternateKey(e => e.Email); // emails are unique. 
                 entity.HasIndex(e => e.UserName).IsUnique(); // I want all usernames to be unique.
-                entity.Property(e => e.UserName).HasField("_validUsername");
+                //entity.Property(e => e.UserName).HasField("_validUsername");
                 //entity.Property<byte[]>("Checksum")
                 //        .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([FirstName],[LastName],[UserName]))"); // This will map a shadow property to the db.
             });

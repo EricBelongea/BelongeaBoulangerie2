@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
 using BelongeaBoulangerie.DataContext.DTOs;
+using BelongeaBoulangerie.DataContext.Utils;
 using Newtonsoft.Json;
 
 namespace BelongeaBoulangerie2.Controllers
@@ -16,9 +17,11 @@ namespace BelongeaBoulangerie2.Controllers
     public class BreadsController : ControllerBase
     {
         private readonly BoulangerieContext _context;
+        private readonly BreadService _breadService;
 
-        public BreadsController(BoulangerieContext context)
+        public BreadsController(BoulangerieContext context, BreadService breadService)
         {
+            _breadService = breadService;
             _context = context;
         }
 
@@ -26,11 +29,14 @@ namespace BelongeaBoulangerie2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BreadDTO>>> GetBreads()
         {
-            var breadDtos = await _context.Breads.Select(b => new BreadDTO
+            var breadDtos = await _context.Breads.Include(b => b.Recipe).Select(b => new BreadDTO
             {
-                Name = b.Name,
+                BreadName = b.Name,
                 Description = b.Description,
-                CountryName = _context.Countries.Where(c => c.CountryId == b.CountryID).Select(c => c.Name).FirstOrDefault()
+                //CountryName = _context.Countries.Single(c => c.CountryId == b.CountryID).Name,
+                BakeTime = b.Recipe.BakeTime
+                //Ingredients = (List<IngredientDTO>)b.Recipe.Ingredients,
+                //Instructions = (List<InstructionDTO>)b.Recipe.Instructions,
             }).ToListAsync();
 
             return breadDtos;
@@ -86,26 +92,17 @@ namespace BelongeaBoulangerie2.Controllers
         [HttpPost]
         public async Task<ActionResult<Bread>> PostBread(BreadDTO breadDto)
         {
-            //var bread = new Bread
-            //{
-            //    Name = breadDto.Name,
-            //    Description = breadDto.Description,
-            //    Recipe = new Recipe
-            //    {
-            //        BakeTime = breadDto.Recipe.BakeTime
-            //    }
-            //};
             var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == breadDto.CountryName);
             if (country == null)
             {
                 return BadRequest("Country not found");
             }
-            var bread = Bread.CreateBreadFromDTO(breadDto, country);
+            var breadId = _breadService.CreateBreadFromDTO(breadDto);
 
             //bread.CountryID = country.CountryId;
-            _context.Breads.Add(bread);
+            //_context.Breads.Add(bread);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetBread", new {id = bread.BreadId}, bread);
+            return CreatedAtAction("GetBread", new {id = breadId}, breadDto);
         }
 
         // DELETE: api/Breads/5

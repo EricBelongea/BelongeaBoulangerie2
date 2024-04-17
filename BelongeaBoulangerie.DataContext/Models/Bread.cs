@@ -23,25 +23,5 @@ namespace BelongeaBoulangerie.DataContext.Models
         public Country Country { get; set; }
         public int CountryID { get; set; }
         public ICollection<User> Users { get; set; }
-
-
-        public static Bread CreateBreadFromDTO(BreadDTO breadDto, Country country)
-        {
-            var bread = new Bread
-            {
-                Name = breadDto.Name,
-                Description = breadDto.Description,
-                Country = country,
-                CountryID = country.CountryId,
-                Recipe = new Recipe
-                {
-                    BakeTime = breadDto.Recipe.BakeTime,
-                    Ingredients = new IngredientDTO[]
-                    {
-                        IngredientString 
-                    }
-                }
-            }
-        }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
 using BelongeaBoulangerie.DataContext.DTOs;
+using BelongeaBoulangerie.DataContext.Utils;
 
 namespace BelongeaBoulangerie2.Controllers
 {
@@ -15,10 +16,12 @@ namespace BelongeaBoulangerie2.Controllers
     public class UsersController : ControllerBase
     {
         private readonly BoulangerieContext _context;
+        private readonly UserService _userService;
 
-        public UsersController(BoulangerieContext context)
+        public UsersController(BoulangerieContext context, UserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // GET: api/Users
@@ -42,55 +45,65 @@ namespace BelongeaBoulangerie2.Controllers
             return user;
         }
 
+        // GET: api/Users/Username
+        [HttpGet("username/{userName}")]
+        public async Task<ActionResult<User>> GetUserName(string userName)
+        {
+            try
+            {
+                var user = await _userService.GetUserByUserName(userName);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(int id, User user)
-        //{
-        //    if (id != user.UserId)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(int id, User user)
+        {
+            var existingUser = await _context.Users.FindAsync(id);
 
-        //    _context.Entry(user).State = EntityState.Modified;
+            if (existingUser == null)
+            {
+                throw new Exception("User Not Found");
+            }
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.Email = user.Email;
+            existingUser.UserName = user.UserName;
+            //var updatedUser = _userService.UpdateUser(id, user); // Instead if ID and User, we could change ID and UserName since the real user wouldn't know the ID.
+            _context.Entry(existingUser).State = EntityState.Modified;
 
-        //    return NoContent();
-        //}
+            try
+            {
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+        }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(UserDTO userDto)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-            var user = new User
+            try
             {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Email = userDto.Email
-            };
-
-            user.SetUsername(userDto.UserName);
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+                var newUser = await _userService.CreateUserService(user);
+                return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/Users/5
@@ -109,9 +122,9 @@ namespace BelongeaBoulangerie2.Controllers
         //    return NoContent();
         //}
 
-        //private bool UserExists(int id)
-        //{
-        //    return _context.Users.Any(e => e.UserId == id);
-        //}
+        private bool UserExists(int id)
+        {
+            return _context.Users.Any(e => e.UserId == id);
+        }
     }
 }

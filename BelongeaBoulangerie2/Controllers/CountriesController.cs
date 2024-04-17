@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
+using BelongeaBoulangerie.DataContext.DTOs;
 
 namespace BelongeaBoulangerie2.Controllers
 {
@@ -22,9 +23,16 @@ namespace BelongeaBoulangerie2.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<ActionResult<IEnumerable<CountryDTO>>> GetCountries()
         {
-            return await _context.Countries.ToListAsync();
+            var countriesDto = await _context.Countries.Select(c => new CountryDTO
+            {
+                Name = c.Name,
+                Description = c.Description,
+                CulinaryHistory = c.CulinaryHistory
+            }).ToListAsync();
+
+            return Ok(countriesDto);
         }
 
         // GET: api/Countries/5

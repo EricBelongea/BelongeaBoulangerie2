@@ -1,4 +1,5 @@
 using BelongeaBoulangerie.DataContext.Models;
+using BelongeaBoulangerie.DataContext.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<BoulangerieContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BoulangerieConnection"))
            .EnableSensitiveDataLogging()
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+builder.Services.AddScoped<BreadService>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

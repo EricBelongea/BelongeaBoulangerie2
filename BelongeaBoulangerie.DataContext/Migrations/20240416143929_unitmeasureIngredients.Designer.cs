@@ -4,6 +4,7 @@ using BelongeaBoulangerie.DataContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BelongeaBoulangerie.DataContext.Migrations
 {
     [DbContext(typeof(BoulangerieContext))]
-    partial class BoulangerieContextModelSnapshot : ModelSnapshot
+    [Migration("20240416143929_unitmeasureIngredients")]
+    partial class unitmeasureIngredients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +49,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasIndex("CountryID");
 
-                    b.ToTable("Breads", (string)null);
+                    b.ToTable("Breads");
                 });
 
             modelBuilder.Entity("BelongeaBoulangerie.DataContext.Models.Country", b =>
@@ -80,7 +83,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasKey("CountryId");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("BelongeaBoulangerie.DataContext.Models.Ingredient", b =>
@@ -106,7 +109,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasKey("IngredientId");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("BelongeaBoulangerie.DataContext.Models.Instruction", b =>
@@ -123,7 +126,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasKey("InstructionId");
 
-                    b.ToTable("Instructions", (string)null);
+                    b.ToTable("Instructions");
                 });
 
             modelBuilder.Entity("BelongeaBoulangerie.DataContext.Models.Recipe", b =>
@@ -145,7 +148,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
                     b.HasIndex("BreadId")
                         .IsUnique();
 
-                    b.ToTable("Recipes", (string)null);
+                    b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("BelongeaBoulangerie.DataContext.Models.User", b =>
@@ -184,7 +187,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BreadUser", b =>
@@ -199,7 +202,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasIndex("UsersUserId");
 
-                    b.ToTable("BreadUser", (string)null);
+                    b.ToTable("BreadUser");
                 });
 
             modelBuilder.Entity("IngredientRecipe", b =>
@@ -214,7 +217,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasIndex("RecipesRecipeId");
 
-                    b.ToTable("IngredientRecipe", (string)null);
+                    b.ToTable("IngredientRecipe");
                 });
 
             modelBuilder.Entity("InstructionRecipe", b =>
@@ -229,7 +232,7 @@ namespace BelongeaBoulangerie.DataContext.Migrations
 
                     b.HasIndex("RecipesRecipeId");
 
-                    b.ToTable("InstructionRecipe", (string)null);
+                    b.ToTable("InstructionRecipe");
                 });
 
             modelBuilder.Entity("BelongeaBoulangerie.DataContext.Models.Bread", b =>

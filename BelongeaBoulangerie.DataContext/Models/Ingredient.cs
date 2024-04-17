@@ -11,11 +11,12 @@ namespace BelongeaBoulangerie.DataContext.Models
     {
         public Ingredient()
         {
-            Recipes = new HashSet<Recipe>();
+            Recipes = new List<Recipe>();
         }
         public int IngredientId { get; set; }
         public string IngredientString { get; set; }
         public double? Quantity { get; set; }
+        public string? UnitMeasure { get; set; }
         public double? Grams { get; set; }
         public ICollection<Recipe> Recipes { get; set; }
     }

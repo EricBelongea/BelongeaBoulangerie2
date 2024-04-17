@@ -9,7 +9,8 @@ namespace BelongeaBoulangerie.DataContext.DTOs
     public class IngredientDTO
     {
         public string IngredientString {  get; set; }
-        public double Quantity { get; set; }
-        public double Grams { get; set; }
+        public double? Quantity { get; set; }
+        public string? UnitMeasure { get; set; }
+        public double? Grams { get; set; }
     }
 }
