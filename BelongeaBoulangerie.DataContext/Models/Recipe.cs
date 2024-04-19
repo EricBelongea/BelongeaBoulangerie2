@@ -15,11 +15,13 @@ namespace BelongeaBoulangerie.DataContext.Models
             Ingredients = new List<Ingredient>();
             Instructions = new List<Instruction>();
         }
+        [JsonIgnore]
         public int RecipeId { get; set; }
         public int? BakeTime { get; set; }
         [JsonIgnore]
         public Bread Bread { get; set; }
         [ForeignKey("Bread")]
+        [JsonIgnore]
         public int BreadId { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
         public ICollection<Instruction> Instructions { get; set; }

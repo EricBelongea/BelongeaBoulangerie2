@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BelongeaBoulangerie.DataContext.Models;
 using BelongeaBoulangerie.DataContext.Utils;
 using Newtonsoft.Json;
+using NPOI.SS.Formula.Functions;
+using BelongeaBoulangerie.DataContext.Migrations;
 
 namespace BelongeaBoulangerie2.Controllers
 {
@@ -26,9 +28,14 @@ namespace BelongeaBoulangerie2.Controllers
 
         // GET: api/Breads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetBreads()
+        public async Task<ActionResult<IEnumerable<Bread>>> GetBreads()
         {
-            return await _breadService.AllBreadWithRecipeInfo();
+            //return await _breadService.AllBreadWithRecipeInfo(); // I want to abstract...
+            return await _context.Breads.Include(b => b.Recipe)
+                                            .ThenInclude(r => r.Ingredients)
+                                        .Include(b => b.Recipe)
+                                            .ThenInclude(r => r.Instructions)
+                                        .ToListAsync();
         }
 
         // GET: api/Breads/5
@@ -78,21 +85,25 @@ namespace BelongeaBoulangerie2.Controllers
 
         // POST: api/Breads
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Bread>> PostBread(Bread bread)
-        //{
-        //    var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == bread.CountryName);
-        //    if (country == null)
-        //    {
-        //        return BadRequest("Country not found");
-        //    }
-        //    var breadId = _breadService.CreateBreadFromDTO(bread);
+        [HttpPost]
+        public async Task<ActionResult<Bread>> PostBread(Bread bread)
+        {
+            _breadService.CreateBread(bread);
+            await _context.SaveChangesAsync();
 
-        //    //bread.CountryID = country.CountryId;
-        //    //_context.Breads.Add(bread);
-        //    await _context.SaveChangesAsync();
-        //    return CreatedAtAction("GetBread", new {id = breadId}, bread);
-        //}
+            return CreatedAtAction("GetBreads", new { id = bread.BreadId}, bread);
+            //var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == bread.CountryName);
+            //if (country == null)
+            //{
+            //    return BadRequest("Country not found");
+            //}
+            //var breadId = _breadService.CreateBreadFromDTO(bread);
+
+            //bread.CountryID = country.CountryId;
+            //_context.Breads.Add(bread);
+            //await _context.SaveChangesAsync();
+            //return CreatedAtAction("GetBread", new { id = breadId }, bread);
+        }
 
         // DELETE: api/Breads/5
         //[HttpDelete("{id}")]

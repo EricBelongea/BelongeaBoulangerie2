@@ -13,6 +13,7 @@ namespace BelongeaBoulangerie.DataContext.Models
         {
             Recipes = new HashSet<Recipe>();
         }
+        [JsonIgnore]
         public int InstructionId { get; set; }
         public string InstructionString { get; set; }
         [JsonIgnore]

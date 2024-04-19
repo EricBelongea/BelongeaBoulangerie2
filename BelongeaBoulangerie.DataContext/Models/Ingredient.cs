@@ -14,6 +14,7 @@ namespace BelongeaBoulangerie.DataContext.Models
         {
             Recipes = new List<Recipe>();
         }
+        [JsonIgnore]
         public int IngredientId { get; set; }
         public string IngredientString { get; set; }
         public double? Quantity { get; set; }
