@@ -42,43 +42,59 @@ namespace BelongeaBoulangerie.DataContext.Models
             modelBuilder.Entity<Country>(entity =>
             {
                 entity.HasKey(e => e.CountryId);
-                //entity.HasKey(e => e.Name); // This is a composite key since country names are unique.
+                entity.HasAlternateKey(e => e.Name);
+                entity.Property(e => e.Description);
+                entity.Property(e => e.CulinaryHistory);
+                entity.Property(e => e.ImageUrl);
                 entity.Property(e => e.CountryContinent)
                     .HasConversion(c => c.ToString(),
                         c => !string.IsNullOrWhiteSpace(c) ?
                         (Continent)Enum.Parse(typeof(Continent), c) : Continent.UnAssigned);
+                entity.HasMany(c => c.Breads).WithOne(b => b.Country);
             });
 
             modelBuilder.Entity<Bread>(entity =>
             {
                 entity.HasKey(e => e.BreadId);
-                //entity.HasOne(b => b.Recipe).WithOne(r => r.Bread);
-                //entity.Property(b => b.RecipeId);
+                entity.Property(e => e.Name);
+                entity.Property(e => e.Description);
+                entity.HasOne(b => b.Recipe).WithOne(r => r.Bread);
+                entity.HasOne(b => b.Country).WithMany(c => c.Breads).HasForeignKey(b => b.CountryID);
             });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.UserId); 
-                entity.HasIndex(e => e.Email).IsUnique();
+                entity.HasIndex(e => e.Email).IsUnique(); // I want all Emails to be unique
                 entity.HasIndex(e => e.UserName).IsUnique(); // I want all usernames to be unique.
-                //entity.Property(e => e.UserName).HasField("_validUsername");
-                //entity.Property<byte[]>("Checksum")
-                //        .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([FirstName],[LastName],[UserName]))"); // This will map a shadow property to the db.
+                entity.Property(e => e.FirstName);
+                entity.Property(e => e.LastName);
             });
 
             modelBuilder.Entity<Recipe>(entity =>
             {
                 entity.HasKey(e => e.RecipeId);
+                entity.Property(e => e.BakeTime);
+                entity.HasOne(r => r.Bread).WithOne(b => b.Recipe);
+                entity.HasMany(r => r.Ingredients).WithMany(i => i.Recipes);
+                entity.HasMany(r => r.Instructions).WithMany(i => i.Recipes);
             });
 
             modelBuilder.Entity<Ingredient>(entity =>
             {
                 entity.HasKey(e => e.IngredientId);
+                entity.Property(e => e.IngredientString);
+                entity.Property(e => e.Quantity);
+                entity.Property(e => e.Grams);
+                entity.Property(e => e.UnitMeasure);
+                entity.HasMany(i => i.Recipes).WithMany(r => r.Ingredients);
             });
 
             modelBuilder.Entity<Instruction>(entity =>
             {
                 entity.HasKey(e => e.InstructionId);
+                entity.Property(e => e.InstructionString);
+                entity.HasMany(i => i.Recipes).WithMany(r => r.Instructions);
             });
 
             #region BreadData

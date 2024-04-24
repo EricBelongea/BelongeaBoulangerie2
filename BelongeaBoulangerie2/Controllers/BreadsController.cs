@@ -91,7 +91,7 @@ namespace BelongeaBoulangerie2.Controllers
             _breadService.CreateBread(bread);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBreads", new { id = bread.BreadId}, bread);
+            return CreatedAtAction("GetBread", new { id = bread.BreadId}, bread);
             //var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == bread.CountryName);
             //if (country == null)
             //{
